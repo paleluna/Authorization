@@ -1,7 +1,11 @@
+using Authorization.Models.DAL.Authority;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration; 
 
 // Add services to the container.
-
+builder.Services.AddDbContext<authContext>(options => options.UseSqlServer(configuration.GetConnectionString("AuthorityConnection")));
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
