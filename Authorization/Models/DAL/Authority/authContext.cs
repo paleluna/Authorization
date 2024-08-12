@@ -22,7 +22,6 @@ public partial class authContext : DbContext
     public virtual DbSet<RolesUsersApp> RolesUsersApps { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<App>(entity =>
@@ -93,9 +92,9 @@ public partial class authContext : DbContext
 
         modelBuilder.Entity<RolesUsersApp>(entity =>
         {
-            entity.HasKey(e => new { e.ReleId, e.UserId, e.AppId });
+            entity.HasKey(e => new { e.RoleId, e.UserId, e.AppId });
 
-            entity.Property(e => e.ReleId).HasColumnName("releId");
+            entity.Property(e => e.RoleId).HasColumnName("roleId");
             entity.Property(e => e.UserId).HasColumnName("userId");
             entity.Property(e => e.AppId).HasColumnName("appId");
 
@@ -104,8 +103,8 @@ public partial class authContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_RolesUsersApps_Apps");
 
-            entity.HasOne(d => d.Rele).WithMany(p => p.RolesUsersApps)
-                .HasForeignKey(d => d.ReleId)
+            entity.HasOne(d => d.Role).WithMany(p => p.RolesUsersApps)
+                .HasForeignKey(d => d.RoleId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_RolesUsersApps_Roles");
 
@@ -122,7 +121,7 @@ public partial class authContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("userLogin");
 
-            entity.HasOne(d => d.UserLoginNavigation).WithMany(p => p.Users)
+            entity.HasOne(d => d.UserLoginNavigationEmploye).WithMany(p => p.Users)
                 .HasForeignKey(d => d.UserLogin)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Users_Employes");

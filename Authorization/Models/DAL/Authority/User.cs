@@ -13,5 +13,5 @@ public partial class User
 
     public virtual ICollection<RolesUsersApp> RolesUsersApps { get; set; } = new List<RolesUsersApp>();
 
-    public virtual Employe UserLoginNavigation { get; set; } = null!;
+    public virtual Employe UserLoginNavigationEmploye { get; set; } = null!;
 }
