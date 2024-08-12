@@ -1,6 +1,6 @@
 ﻿namespace Authorization.Models.DTO.Get
 {
-    public class User
+    public class User : Set.User
     {
         public string AccId { get; set; }
         public string Name { get; set; }

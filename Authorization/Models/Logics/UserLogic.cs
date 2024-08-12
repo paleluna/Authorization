@@ -9,40 +9,44 @@ namespace Authorization.Models.Logics
     {
         private readonly authContext _context;
 
-        public UserLogic (authContext authContext)
+        public UserLogic(authContext authContext)
         {
             _context = authContext;
         }
 
-        public async Task<DTO.User> GetUserAsync(string get)
+        public async Task<DTO.Get.User> GetUserAsync(string get)
         {
-            var acc = get.ToLower().Trim(); //вводим ник юзера, tolower - убирает заглавные буквы, trim - убирает пробелы
-            var user = await _context.Users.AsNoTracking() // отключаем отслеживание изменений
+            var acc = get
+                .ToLower()
+                .Trim();
+            var user = await _context.Users
+                .AsNoTracking()
                 .Include(emp => emp.UserLoginNavigationEmploye)
+                .Include(u => u.RolesUsersApps)
+                .ThenInclude(ap => ap.App)
+                .Include(u => u.RolesUsersApps)
+                .ThenInclude(ro => ro.Role)
+                .Include(rt => rt.RefreshTokens)
                 .FirstOrDefaultAsync(u => u.UserLogin.ToLower().Trim() == acc);
 
             if (user == null) return null;
 
-            var us = new DTO.User
+            var us = new DTO.Get.User
             {
+                AccId = user.UserLogin,
                 Id = user.UserId,
-                Login = user.UserLogin,
-                Employe = user.UserLoginNavigationEmploye != null ? new DTO.Employe
-                {
-                    UserLogin = user.UserLoginNavigationEmploye.UserLogin,
-                    Name = user.UserLoginNavigationEmploye.EmpName,
-                    Surname = user.UserLoginNavigationEmploye.EmpSurname,
-                    Email = user.UserLoginNavigationEmploye.EmpEmail,
-                    Phone = user.UserLoginNavigationEmploye.EmpPhone,
-                    RoleName = user.UserLoginNavigationEmploye.RoleName,
-                    IsBlocked = user.UserLoginNavigationEmploye.EmpIsBlocked
-                } : null
+                Name = user.UserLoginNavigationEmploye.EmpName,
+                Surname = user.UserLoginNavigationEmploye.EmpSurname,
+                Email = user.UserLoginNavigationEmploye.EmpEmail,
+                Phone = user.UserLoginNavigationEmploye.EmpPhone,
+                RoleName = user.UserLoginNavigationEmploye.RoleName
+
             };
             return us;
         }
         public async Task<int> AddUserAsync(DTO.Set.SimpleUser add)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserLogin.ToLower().Trim() ==  add.AccId.ToLower().Trim());
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserLogin.ToLower().Trim() == add.AccId.ToLower().Trim());
             if (user != null)
             {
                 var ch = await ChangeUserAsync(add);
@@ -82,7 +86,7 @@ namespace Authorization.Models.Logics
 
             var appIds = name.Roles.Select(t => t.AppId).ToList();
             var app = await _context.Apps.AsNoTracking().Where(a => appIds.Contains(a.AppId)).ToListAsync();
-            if(app == null || !app.Any()) return -1;
+            if (app == null || !app.Any()) return -1;
 
             var userRole = _context.RolesUsersApps.Where(a => a.UserId == u.UserId && app.Select(i => i.AppId).Contains(a.AppId));
             var removed = userRole.Where(ur => !name.Roles.Select(r => r.RoleId).Contains(u.UserId));
