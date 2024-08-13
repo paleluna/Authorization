@@ -74,6 +74,7 @@ namespace Authorization.Models.Logics
                 RoleId = r.RoleId,
                 UserId = user_new.UserId
             }).ToList();
+
             await _context.SaveChangesAsync();
             return user_new.UserId;
 
