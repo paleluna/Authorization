@@ -15,18 +15,20 @@ namespace Authorization.Models.Logics
 
         public async Task<List<Models.DTO.Role>> GetRolesAsync()
         {
-            return await _context.Roles.Include(a => a.App).Select(r => new Models.DTO.Role
-            {
-                Id = r.RoleId,
-                Name = r.RoleName,
-                Description = r.RoleDescription,
-                AppId = r.AppId,
-                App = new Models.DTO.App
+            return await _context.Roles
+                .Include(a => a.App)
+                .Select(r => new Models.DTO.Role
                 {
-                    Id = r.App.AppId,
-                    Name = r.App.AppName
-                }
-            }).ToListAsync();
+                    Id = r.RoleId,
+                    Name = r.RoleName,
+                    Description = r.RoleDescription,
+                    AppId = r.AppId,
+                    App = new Models.DTO.App
+                    {
+                        Id = r.App.AppId,
+                        Name = r.App.AppName
+                    }
+                }).ToListAsync();
         }
 
         public async Task<string> AddAsync(DTO.Role add)

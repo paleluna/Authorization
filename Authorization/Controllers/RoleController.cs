@@ -21,7 +21,7 @@ namespace Authorization.Controllers
         [HttpGet]
         public async Task<IActionResult> GetRole()
         {
-            var res = _logic.GetRolesAsync();
+            var res = await _logic.GetRolesAsync();
             return Ok(res);
         }
 
