@@ -10,6 +10,7 @@ builder.Services.AddDbContext<authContext>(options => options.UseSqlServer(confi
 builder.Services.AddScoped<UserLogic, UserLogic>();
 builder.Services.AddScoped<AppLogic, AppLogic>();
 builder.Services.AddScoped<RoleLogic, RoleLogic>();
+builder.Services.AddScoped<EmployeLogic, EmployeLogic>();
 builder.Services.AddDbContext<authContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("AuthorityConnection") + "TrustServerCertificate=True"));
 

@@ -12,7 +12,7 @@ namespace Authorization.Models.Logics
             _context = context;
         }
 
-        public async Task<List<DTO.App>> GetApps()
+        public async Task<List<DTO.App>> GetAppsAsync()
         {
             var dal = await _context.Apps.AsNoTracking().ToListAsync();
             var dto = dal.Select(x => new DTO.App
@@ -22,7 +22,7 @@ namespace Authorization.Models.Logics
             }).ToList();
             return dto;
         }
-        public async Task<string> AddApps(DTO.App add)
+        public async Task<string> AddAppsAsync(DTO.App add)
         {
             var dal = new DAL.Authority.App
             {
@@ -33,7 +33,7 @@ namespace Authorization.Models.Logics
             return dal.AppId.ToString();
         }
 
-        public async Task<string> UpdateApps(DTO.App upd)
+        public async Task<string> UpdateAppsAsync(DTO.App upd)
         {
             var dal = await _context.Apps.FirstOrDefaultAsync(x => x.AppId == upd.Id);
             if (dal == null) return null;
@@ -42,7 +42,7 @@ namespace Authorization.Models.Logics
             return dal.AppName.ToString();
         }
 
-        public async Task<string> DeleteApps(int id)
+        public async Task<string> DeleteAppsAsync(int id)
         {
             var dal = _context.Apps.FirstOrDefault(x => x.AppId == id);
             if (dal == null) return null;

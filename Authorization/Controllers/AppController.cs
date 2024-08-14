@@ -19,14 +19,14 @@ namespace Authorization.Controllers
         [HttpGet]
         public async Task<IActionResult> GetApps()
         {
-            var res = await _logic.GetApps();
+            var res = await _logic.GetAppsAsync();
             return Ok(res);
         }
 
         [HttpPost]
         public async Task<IActionResult> AddApps(Models.DTO.App add)
         {
-            var res = await _logic.AddApps(add);
+            var res = await _logic.AddAppsAsync(add);
             return Ok(res);
 
         }
@@ -34,14 +34,14 @@ namespace Authorization.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateApps(Models.DTO.App upd)
         {
-            var res = await _logic.UpdateApps(upd);
+            var res = await _logic.UpdateAppsAsync(upd);
             return Ok(res);
         }
 
         [HttpDelete]
         public async Task<IActionResult> DeleteApp(int id)
         {
-            var res = await _logic.DeleteApps(id);
+            var res = await _logic.DeleteAppsAsync(id);
             return Ok(res);
         }
     }

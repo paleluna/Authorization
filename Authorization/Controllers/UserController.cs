@@ -22,8 +22,7 @@ namespace Authorization.Controllers
         public async Task<IActionResult> GetAsync(string user)
         {
             var res = await _logic.GetUserAsync(user);
-            if (res == null)
-                return NotFound();
+            if (res == null) return NotFound();
             return Ok(res);
         }
 

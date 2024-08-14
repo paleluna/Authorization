@@ -27,7 +27,7 @@ namespace Authorization.Models.Logics
                 .Include(u => u.RolesUsersApps)
                 .ThenInclude(ro => ro.Role)
                 .Include(rt => rt.RefreshTokens)
-                .FirstOrDefaultAsync(u => u.UserLogin.ToLower().Trim() == acc);
+                .FirstOrDefaultAsync(u => u.UserLogin.ToLower() == acc);
 
             if (user == null) return null;
 
